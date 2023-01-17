@@ -1,0 +1,44 @@
+version: '3'
+services:
+  zookeeper:
+    image: wurstmeister/zookeeper
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+    restart: unless-stopped
+    #command: bash -c /opt/zookeeper-3.4.13/bin/zkCli.sh create /kafka-manager ""
+    # command: bash -c "bin/zkCli.sh --servers zookeeper:2181 create /kafka-manager/mutex/locks """
+    # command: bash -c "bin/zkCli.sh --servers zookeeper:2181 create /kafka-manager/mutex/leases """
+  kafka:
+    image: wurstmeister/kafka
+    container_name: kafka
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: kafka
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_CREATE_TOPICS: "fakertopic:1:1"
+    restart: unless-stopped
+  kafka-manager:
+    image: hlebalbau/kafka-manager:stable
+    container_name: kafka-manager
+    ports:
+      - "9000:9000"
+    environment:
+      ZK_HOSTS: zookeeper:2181
+      APPLICATION_SECRET: "random-secret"
+    restart: unless-stopped
+  kafka-producer:
+    image: kafkaproducer
+    container_name: kafka-producer
+    environment:
+      ZK_HOSTS: zookeeper:2181
+      KAFKA_HOSTS: kafka:9092
+    depends_on:
+      - zookeeper
+      - kafka
+    restart: unless-stopped
+
+
+
+
