@@ -1,5 +1,5 @@
 # For more information, please refer to https://aka.ms/vscode-docker-python
-FROM python:3.10
+FROM python:3.10-slim
 
 # Keeps Python from generating .pyc files in the container
 ENV PYTHONDONTWRITEBYTECODE 1
@@ -9,7 +9,7 @@ ENV PYTHONUNBUFFERED 1
 
 # Install pip requirements
 ADD requirements.txt .
-RUN python -m pip install -r requirements.txt
+RUN python -m pip install --no-cache-dir -r requirements.txt
 
 RUN mkdir /kafka_python
 WORKDIR /kafka_python

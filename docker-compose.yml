@@ -35,21 +35,22 @@ services:
     environment:
       ZK_HOSTS: zookeeper:2181
       KAFKA_HOSTS: kafka:9092
+      KAFKA_TOPIC: instance-info
     depends_on:
       - zookeeper
       - kafka
     restart: always
-  kafka-consumer:
-    image: kafkaconsumer:latest
-    build:
-      context: consumer
-      dockerfile: Dockerfile
-    container_name: kafka-consumer
-    environment:
-      ZK_HOSTS: zookeeper:2181
-      KAFKA_HOSTS: kafka:9092
-    depends_on:
-      - zookeeper
-      - kafka
-      - kafka-producer
-    restart: always
+  # kafka-consumer:
+  #   image: kafkaconsumer:latest
+  #   build:
+  #     context: consumer
+  #     dockerfile: Dockerfile
+  #   container_name: kafka-consumer
+  #   environment:
+  #     ZK_HOSTS: zookeeper:2181
+  #     KAFKA_HOSTS: kafka:9092
+  #   depends_on:
+  #     - zookeeper
+  #     - kafka
+  #     - kafka-producer
+  #   restart: always

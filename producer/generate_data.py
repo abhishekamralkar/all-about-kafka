@@ -1,19 +1,10 @@
 #!/usr/bin/env python
+
 """
 Data Generator.
+
 This program generates data which simulates AWS CLI
 """
-
-# from faker import Faker
-# import time
-
-# def generate_data():
-#     fake = Faker()
-#     return {
-#         "name": fake.name(),
-#         "address": fake.address(),
-
-# }
 
 from random import choice
 import string
@@ -26,7 +17,7 @@ def generate_random(length=16):
     return password
 
 
-def created_instances(num_devices=1, num_subnets=1):
+def create_instances(num_devices=1, num_subnets=1):
     """Create AWS instances."""
     if num_devices > 254 or num_subnets > 254:
         print("Error: too many devices and/or subnets requested")
@@ -42,7 +33,7 @@ def created_instances(num_devices=1, num_subnets=1):
                 instances["ImageId"] = "ami-09246dnb00g7c4fef"
                 instances["InstanceId"] = f"i-{generate_random(18)}"
                 instances["Type"] = "m5.xlage"
-                instances["EbsOptimized"] = choice(["true", "false"]) 
+                instances["EbsOptimized"] = choice(["true", "false"])
             elif components == "db":
                 instances["ImageId"] = "ami-09267dnb00g7c4fef"
                 instances["InstanceId"] = f"i-{generate_random(18)}"
@@ -63,10 +54,10 @@ def created_instances(num_devices=1, num_subnets=1):
                 instances["InstanceId"] = f"i-{generate_random(18)}"
                 instances["Type"] = "i4.4xlage"
                 instances["EbsOptimized"] = choice(["true", "false"])
-            instances["PrivateDNS"] = "10.0." + str(subnet_index) + "." + str(device_index) 
+            instances["PrivateDNS"] = "10.0." + str(subnet_index) + "." + str(device_index)
     return instances
 
 
 if __name__ == '__main__':
     while True:
-        print(created_instances(num_devices=20, num_subnets=4))
+        create_instances(num_devices=20, num_subnets=4)
